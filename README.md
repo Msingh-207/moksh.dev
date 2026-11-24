@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# moksh.dev — Bento OS portfolio
 
-## Getting Started
+Personal portfolio for **Moksh Singh** — full-stack developer, economics undergrad and video editor.
 
-First, run the development server:
+**Stack:** Next.js 16 (App Router, Cache Components) · TypeScript · Tailwind CSS v4 · Framer Motion · cmdk · Lucide React
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # production build (type-check + prerender)
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deploy: push to GitHub and import the repo in Vercel — no configuration needed.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **⌘K / Ctrl+K command palette** — jump to sections, filter the archive, open any case study, copy email, open résumé/socials, toggle UI sounds and motion.
+- **Bento hero** — identity, live IST telemetry, discipline quick-jump, and a tabbed live-preview "showreel" (AUDash UI, DaVinci Fusion, Hyprland).
+- **Archive / Vault** — Markdown-powered projects with URL-synced filters (`?track=dev|quant|video|3d|linux`) and deep-linkable case studies (`?project=audash`).
+- **Interactive case studies** — macro indicator chart, root-finding visualiser, before/after colour-grade slider, Web Audio stem player, CI/CD pipeline, NLE timeline, Hyprland desktop mock.
+- **Printable résumé** at `/resume`, generated from the same data.
 
-## Learn More
+## Adding a project
 
-To learn more about Next.js, take a look at the following resources:
+Create `content/projects/<slug>.md`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```md
+---
+slug: my-project
+title: My Project
+subtitle: One-line descriptor
+track: dev            # dev | quant | video | 3d | linux
+year: "2026"
+role: Solo developer
+order: 9              # sort order in the archive
+featured: false       # featured projects also appear on /resume
+summary: One or two sentences shown on the card.
+stack: [React, Flask]
+metrics:
+  - { label: Users, value: "500+" }
+links:
+  - { label: Live site, href: "https://example.com", kind: live }
+  - { label: GitHub, href: "https://github.com/...", kind: repo }
+embeds: []            # optional: audash | pipeline | macro-chart | root-finder | color-grade | fusion | nle-timeline | audio-lab | hyprland
+# video: /media/clip.mp4   # optional, file in /public/media
+# cover: /media/shot.png   # optional, file in /public/media
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Markdown body
 
-## Deploy on Vercel
+Rendered in the case-study drawer.
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+That's it — the archive, filters, palette and counts pick it up automatically.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Structure
+
+```
+content/projects/          Markdown case studies
+public/media/              your own .mp4 / .png / .pdf (see README inside)
+src/app/                   layout, home page, /resume
+src/components/
+  bento/                   hero grid cards
+  archive/                 filter bar, cards, case-study drawer
+  command-palette/         ⌘K palette
+  interactive/             chart, sliders, players, previews
+  nav/ sections/ ui/ providers/
+src/lib/                   site data, tracks, content loader, URL state
+```
+
+Personal details (links, timeline, stack, workstation) live in `src/lib/site.ts`.
